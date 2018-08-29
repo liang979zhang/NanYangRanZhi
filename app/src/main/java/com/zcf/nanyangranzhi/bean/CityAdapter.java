@@ -6,12 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.zcf.nanyangranzhi.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by zhangxutong .
@@ -19,6 +23,7 @@ import java.util.List;
  */
 
 public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
+
     private Context mContext;
     private List<CityBean> mDatas;
     private LayoutInflater mInflater;
@@ -38,12 +43,14 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final CityBean cityBean = mDatas.get(position);
         holder.tvCity.setText(cityBean.getCity());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, "pos:"+position, Toast.LENGTH_SHORT).show();
-            }
-        });
+        holder.tvPhone.setText(cityBean.getPhone());
+        Glide.with(mContext).load(cityBean.getImg()).placeholder(R.mipmap.avatarsample165).into(holder.ivIcon);
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(mContext, "pos:" + position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     @Override
@@ -57,11 +64,16 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.iv_icon)
+        CircleImageView ivIcon;
+        @BindView(R.id.tvCity)
         TextView tvCity;
+        @BindView(R.id.tv_phone)
+        TextView tvPhone;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            tvCity = (TextView) itemView.findViewById(R.id.tvCity);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

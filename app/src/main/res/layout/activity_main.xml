@@ -4,64 +4,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
 
-    <com.zcf.nanyangranzhi.bean.CustomEditText
-        android:id="@+id/school_friend_member_search_input"
+    <com.zcf.nanyangranzhi.utils.CustomViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="10dp"
-        android:background="@drawable/bg_search_input"
-        android:drawableLeft="@mipmap/ic_search"
-        android:drawablePadding="5dp"
-        android:drawableRight="@mipmap/ic_edit_text_delbtn"
-        android:freezesText="true"
-        android:gravity="center_vertical"
-        android:hint="搜索"
-        android:imeOptions="actionSearch"
-        android:paddingBottom="2dp"
-        android:paddingTop="2dp"
-        android:singleLine="true"
-        android:textColor="@android:color/black"
-        android:textColorHint="#ffb5b5b5"
-        android:textSize="14sp" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-    <FrameLayout
+
+    <com.yinglan.alphatabs.AlphaTabsIndicator
+        android:id="@+id/alphaIndicator"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:background="@color/white"
+        android:layout_height="@dimen/x50"
+        android:orientation="horizontal">
 
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </android.support.v7.widget.RecyclerView>
-
-        <com.zcf.nanyangranzhi.bean.IndexBar
-            android:id="@+id/indexBar"
-            android:layout_width="24dp"
+        <com.yinglan.alphatabs.AlphaTabView
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_gravity="right"
-            app:pressBackground="@color/partTranslucent"
-            app:textSize="16sp" />
+            android:layout_weight="1"
+            android:padding="@dimen/x5"
+            app:tabIconNormal="@mipmap/shouye"
+            app:tabIconSelected="@mipmap/shouye_sel"
+            app:tabText="首页"
+            app:tabTextSize="12sp"
+            app:textColorNormal="@color/color_a4a5a7"
+            app:textColorSelected="@color/color_2d97fb" />
 
-        <TextView
-            android:id="@+id/tvSideBarHint"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            android:background="@drawable/shape_side_bar_bg"
-            android:gravity="center"
-            android:textColor="@android:color/white"
-            android:textSize="48sp"
-            android:visibility="gone"
-            tools:text="A"
-            tools:visibility="visible" />
+        <com.yinglan.alphatabs.AlphaTabView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="@dimen/x5"
+            app:tabIconNormal="@mipmap/tongxunlu"
+            app:tabIconSelected="@mipmap/tongxunlu_sel"
+            app:tabText="通讯录"
+            app:tabTextSize="12sp"
+            app:textColorNormal="@color/color_a4a5a7"
+            app:textColorSelected="@color/color_2d97fb" />
 
-    </FrameLayout>
 
+        <com.yinglan.alphatabs.AlphaTabView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="@dimen/x5"
+            app:tabIconNormal="@mipmap/youuxiang"
+            app:tabIconSelected="@mipmap/youxiang_sel"
+            app:tabText="邮箱"
+            app:tabTextSize="12sp"
+            app:textColorNormal="@color/color_a4a5a7"
+            app:textColorSelected="@color/color_2d97fb" />
+
+        <com.yinglan.alphatabs.AlphaTabView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="@dimen/x5"
+            app:tabIconNormal="@mipmap/gerenzx"
+            app:tabIconSelected="@mipmap/gerenzx"
+            app:tabText="个人中心"
+            app:tabTextSize="12sp"
+            app:textColorNormal="@color/color_a4a5a7"
+            app:textColorSelected="@color/color_2d97fb" />
+
+
+    </com.yinglan.alphatabs.AlphaTabsIndicator>
 
 </LinearLayout>

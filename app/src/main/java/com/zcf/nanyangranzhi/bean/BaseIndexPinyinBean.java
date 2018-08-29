@@ -1,6 +1,8 @@
 package com.zcf.nanyangranzhi.bean;
 
-public abstract  class BaseIndexPinyinBean extends BaseIndexTagBean implements IIndexTargetInterface {
+import java.io.Serializable;
+
+public abstract  class BaseIndexPinyinBean extends BaseIndexTagBean implements IIndexTargetInterface ,Serializable {
 
     private String pyCity;//城市的拼音
 

@@ -1,116 +1,85 @@
 package com.zcf.nanyangranzhi;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
+import android.widget.Toast;
 
-import com.zcf.nanyangranzhi.bean.CityAdapter;
-import com.zcf.nanyangranzhi.bean.CityBean;
-import com.zcf.nanyangranzhi.bean.DividerItemDecoration;
-import com.zcf.nanyangranzhi.bean.IndexBar;
-import com.zcf.nanyangranzhi.bean.TitleItemDecoration;
+import com.yinglan.alphatabs.AlphaTabsIndicator;
+import com.zcf.nanyangranzhi.adapter.MainAdapter;
+import com.zcf.nanyangranzhi.base.BaseActivity;
+import com.zcf.nanyangranzhi.fragment.ContactsFragment;
+import com.zcf.nanyangranzhi.fragment.EmailFragment;
+import com.zcf.nanyangranzhi.fragment.MainFragment;
+import com.zcf.nanyangranzhi.fragment.MyFragment;
+import com.zcf.nanyangranzhi.utils.CustomViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "zxt";
-    private RecyclerView mRv;
-    private CityAdapter mAdapter;
-    private LinearLayoutManager mManager;
-    private List<CityBean> mDatas;
+import butterknife.BindView;
 
-    private TitleItemDecoration mDecoration;
+public class MainActivity extends BaseActivity {
+    private MainAdapter mainAdapter;
+    @BindView(R.id.viewPager)
+    CustomViewPager viewPager;
+    @BindView(R.id.alphaIndicator)
+    AlphaTabsIndicator alphaIndicator;
 
-    /**
-     * 右侧边栏导航区域
-     */
-    private IndexBar mIndexBar;
-
-    /**
-     * 显示指示器DialogText
-     */
-    private TextView mTvSideBarHint;
+    List<Fragment> fragmentList = new ArrayList<>();
+    private Fragment emailFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
+//        ButterKnife.bind(this);
+//        ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
+//        StatusBarCompat.compat(this,getResources().getColor(R.color.color_2d97fb));
+        emailFragment = EmailFragment.newInstance();
+        fragmentList.add(MainFragment.newInstance());
+        fragmentList.add(ContactsFragment.newInstance());
+        fragmentList.add(emailFragment);
+        fragmentList.add(MyFragment.newInstance());
 
-        EditText mSearchInput = (EditText) findViewById(R.id.school_friend_member_search_input);
-        mSearchInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        mainAdapter = new MainAdapter(getSupportFragmentManager(), fragmentList);
+        viewPager.setOffscreenPageLimit(1);
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                ArrayList<CityBean> temp = new ArrayList<>(mDatas);
-                for (CityBean data : mDatas) {
-                    if (data.getCity().contains(charSequence)) {
-                        temp.remove(data);
-                        temp.add(data);
-                    } else {
-                        temp.remove(data);
-                    }
-                }
-
-                if (mAdapter != null) {
-                    mAdapter.refresh(temp);
-                }
-
-
-                if (temp.size() >1) {
-                    mDecoration.setmDatas(MainActivity.this,temp);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        mRv = (RecyclerView) findViewById(R.id.rv);
-        mRv.setLayoutManager(mManager = new LinearLayoutManager(this));
-        //initDatas();
-        initDatas(getResources().getStringArray(R.array.provinces));
-        mRv.setAdapter(mAdapter = new CityAdapter(this, mDatas));
-        mRv.addItemDecoration(mDecoration = new TitleItemDecoration(this, mDatas));
-        //如果add两个，那么按照先后顺序，依次渲染。
-        //mRv.addItemDecoration(new TitleItemDecoration2(this,mDatas));
-        mRv.addItemDecoration(new DividerItemDecoration(MainActivity.this, DividerItemDecoration.VERTICAL_LIST));
-
-        //使用indexBar
-        mTvSideBarHint = (TextView) findViewById(R.id.tvSideBarHint);//HintTextView
-        mIndexBar = (IndexBar) findViewById(R.id.indexBar);//IndexBar
-        mIndexBar.setmPressedShowTextView(mTvSideBarHint)//设置HintTextView
-                .setNeedRealIndex(true)//设置需要真实的索引
-                .setmLayoutManager(mManager)//设置RecyclerView的LayoutManager
-                .setmSourceDatas(mDatas);//设置数据源
+        viewPager.setAdapter(mainAdapter);
+        alphaIndicator.setViewPager(viewPager);
 
 
     }
 
+    @Override
+    public int getview() {
+        return R.layout.activity_main;
+    }
 
-    /**
-     * 组织数据源
-     *
-     * @param data
-     * @return
-     */
-    private void initDatas(String[] data) {
-        mDatas = new ArrayList<>();
-        for (int i = 0; i < data.length; i++) {
-            CityBean cityBean = new CityBean();
-            cityBean.setCity(data[i]);//设置城市名称
-            mDatas.add(cityBean);
+    private long timeMillis;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - timeMillis) > 2000) {
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                timeMillis = System.currentTimeMillis();
+            } else {
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == 302) {
+            emailFragment.setUserVisibleHint(true);
         }
     }
 }

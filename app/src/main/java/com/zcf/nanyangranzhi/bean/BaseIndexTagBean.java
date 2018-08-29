@@ -1,6 +1,8 @@
 package com.zcf.nanyangranzhi.bean;
 
-public class BaseIndexTagBean {
+import java.io.Serializable;
+
+public class BaseIndexTagBean implements Serializable{
 
     private String tag;//所属的分类（城市的汉语拼音首字母）
 
